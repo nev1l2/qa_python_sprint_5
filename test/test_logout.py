@@ -1,14 +1,14 @@
-import time
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from data import TestUrl, TEST_USER
 from locators import TestLocators
 from conftest import driver
 
 class TestLogout:
     # Тестирование выхода из учетной записи
     def test_logout(self, driver):
-        driver.get('https://stellarburgers.nomoreparties.site/')
+        driver.get(TestUrl.MAIN_URL_TEST)
 
         # Найти кнопку "Войти в акаунт" и нажать
         driver.find_element(*TestLocators.BUTTON_LOGIN_IN_ACC_IN_MAIN).click()
@@ -20,9 +20,9 @@ class TestLogout:
         )
 
         # Найти поле "Email" и заполни его
-        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_EMAIL).send_keys('buzov_andrey_12_123@yandex.ru')
+        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_EMAIL).send_keys(TEST_USER['email'])
         # Найти поле "Пароль" и заполни его
-        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_PASSWORD).send_keys('qwerty')
+        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_PASSWORD).send_keys(TEST_USER['password'])
         # Найти кнопку "Войти" и нажать
         driver.find_element(*TestLocators.BUTTON_FORM_AUTHORIZATIONS_LOGIN).click()
 
@@ -42,7 +42,5 @@ class TestLogout:
 
         # Найти кнопку "Выйти" и нажать
         driver.find_element(*TestLocators.BUTTON_LOGOUT).click()
-
-        time.sleep(3)
 
         assert driver.current_url == 'https://stellarburgers.nomoreparties.site/login'

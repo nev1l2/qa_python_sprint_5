@@ -1,14 +1,14 @@
-import time
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from data import TestUrl, TEST_USER
 from locators import TestLocators
 from conftest import driver
 
 class TestButtonPersAcc:
     # Тестирование перехода авторизованного пользователя
     def test_click_button_autorized_user(self,driver):
-        driver.get('https://stellarburgers.nomoreparties.site/')
+        driver.get(TestUrl.MAIN_URL_TEST)
 
         # Найти кнопку "Войти в акаунт" и нажать
         driver.find_element(*TestLocators.BUTTON_LOGIN_IN_ACC_IN_MAIN).click()
@@ -20,9 +20,9 @@ class TestButtonPersAcc:
         )
 
         # Найти поле "Email" и заполни его
-        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_EMAIL).send_keys('buzov_andrey_12_123@yandex.ru')
+        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_EMAIL).send_keys(TEST_USER['email'])
         # Найти поле "Пароль" и заполни его
-        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_PASSWORD).send_keys('qwerty')
+        driver.find_element(*TestLocators.INPUT_FORM_AUTHORIZATIONS_PASSWORD).send_keys(TEST_USER['password'])
         # Найти кнопку "Войти" и нажать
         driver.find_element(*TestLocators.BUTTON_FORM_AUTHORIZATIONS_LOGIN).click()
 
@@ -35,13 +35,12 @@ class TestButtonPersAcc:
         # Переходим в личный кабинет
         driver.find_element(*TestLocators.PERSONAL_ACCOUNT).click()
 
-        time.sleep(3)
 
         assert driver.current_url == 'https://stellarburgers.nomoreparties.site/account/profile'
 
     # Тестирование перехода не авторизованного пользователя
     def test_click_button_unautorized_user(self,driver):
-        driver.get('https://stellarburgers.nomoreparties.site/')
+        driver.get(TestUrl.MAIN_URL_TEST)
 
         # Переходим в личный кабинет
         driver.find_element(*TestLocators.PERSONAL_ACCOUNT).click()
@@ -51,8 +50,6 @@ class TestButtonPersAcc:
             expected_conditions.visibility_of_element_located(
                 TestLocators.HEADER_FORM_LOGIN)
         )
-
-        time.sleep(3)
 
         assert driver.current_url == 'https://stellarburgers.nomoreparties.site/login'
 

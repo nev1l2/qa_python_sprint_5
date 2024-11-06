@@ -1,8 +1,8 @@
-import time
 import pytest
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from data import TestUrl
 from helpers import generates_email, generates_password
 from locators import TestLocators
 from conftest import driver
@@ -13,7 +13,7 @@ class TestRegistration:
     @pytest.mark.parametrize('email_char_num, psw_char_num', [[1,6], [2,7], [15,15]])
     def test_registration_with_valid_email_and_password(self,driver, email_char_num, psw_char_num):
 
-        driver.get('https://stellarburgers.nomoreparties.site/')
+        driver.get(TestUrl.MAIN_URL_TEST)
 
         # Найти кнопку "Войти в акаунт" и нажать
         driver.find_element(*TestLocators.BUTTON_LOGIN_IN_ACC_IN_MAIN).click()
@@ -45,12 +45,11 @@ class TestRegistration:
                 TestLocators.HEADER_FORM_LOGIN)
         )
 
-        time.sleep(3)
 
         assert driver.current_url == 'https://stellarburgers.nomoreparties.site/login'
 
     def test_registration_with_incorrect_psw(self, driver):
-        driver.get('https://stellarburgers.nomoreparties.site/')
+        driver.get(TestUrl.MAIN_URL_TEST)
 
         # Найти кнопку "Войти в акаунт" и нажать
         driver.find_element(*TestLocators.BUTTON_LOGIN_IN_ACC_IN_MAIN).click()
@@ -85,6 +84,5 @@ class TestRegistration:
         # Убедиться в появлении сообщения об ошибке
         text_error = driver.find_element(*TestLocators.INCORRECT_PASSWORD_MESSAGE).text
 
-        time.sleep(3)
 
         assert 'Некорректный пароль' in text_error
